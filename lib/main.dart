@@ -28,13 +28,21 @@ Future<void> main() async {
   Intl.defaultLocale = 'id_ID';
   OneSignal.shared.setLogLevel(OSLogLevel.verbose, OSLogLevel.none);
   OneSignal.shared.setLocationShared(true);
-  OneSignal.shared.init(FlutterConfig.get("ONE_SIGNAL_APP_ID").toString(),
-      iOSSettings: {
-        OSiOSSettings.autoPrompt: false,
-        OSiOSSettings.inAppLaunchUrl: false
-      });
-  OneSignal.shared
-      .setInFocusDisplayType(OSNotificationDisplayType.notification);
+  OneSignal.shared.setAppId(FlutterConfig.get("ONE_SIGNAL_APP_ID").toString());
+  // The promptForPushNotificationsWithUserResponse function will show the iOS push notification prompt. We recommend removing the following code and instead using an In-App Message to prompt for notification permission
+  OneSignal.shared.promptUserForPushNotificationPermission().then((accepted) {
+    print("Accepted permission: $accepted");
+  });
+  // OneSignal.shared
+  //     .setInFocusDisplayType(OSNotificationDisplayType.notification);
+
+  // NOTE: Replace with your own app ID from https://www.onesignal.com
+  // await OneSignal.shared.setAppId(
+  //     FlutterConfig.get("ONE_SIGNAL_APP_ID").toString(),
+  //     iOSSettings: {
+  //       OSiOSSettings.autoPrompt: false,
+  //       OSiOSSettings.inAppLaunchUrl: false
+  //     });
 
   const initializedSettingsAndroid =
       AndroidInitializationSettings('ic_stat_onesignal_default');
